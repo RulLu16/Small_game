@@ -21,6 +21,7 @@ public class game_play implements WindowListener, KeyListener {
 	int arrow;
 	JTextPane fr; //first page frame
 	Frame fr_f,c_f,gp_f; // all frame
+	String[] command_menu= {"Attack","Guard","Evasion","Heal","Skill"};
 	String[] char_menu= {"Beginner\n","Tanker\n","Heavy Dealer\n",
 			"Theif\n","Light Dealer\n","Healer\n"};
 	String[] descrip={
@@ -37,6 +38,9 @@ public class game_play implements WindowListener, KeyListener {
 			+ "Special skill : Heal guard. Can ignore enemy's attack when heal."
 	};
 	String[] command= {"Attack","Guard","Evasion","Heal","Skill"};
+	
+	basic_character player;
+	basic_character pc;
 	
 	
 	private void first_page(){
@@ -88,7 +92,55 @@ public class game_play implements WindowListener, KeyListener {
 		present=1;
 	}
 	private void real_play(int choice) {
+		int pc_choice;
 		
+		gp=make_frame(gp,700,450);
+		hpbar=make_frame(hpbar,700,100);
+		
+		gp_f=new_frame(gp_f,750,550);
+		gp_f.add("North",hpbar);
+		gp_f.add("South",gp);
+		
+		gp.addKeyListener(this);
+		arrow=0;
+		present=2;
+		
+		while(true) {
+			pc_choice=(int)(Math.random()*5+1);
+			if(pc_choice!=choice)
+				break;
+		}
+		player=make_char(player, choice);
+		pc=make_char(pc,pc_choice);
+	}
+	
+	private void fight(int command) {
+		//case number 25
+		
+	}
+	
+	private basic_character make_char(basic_character result,int c) {
+		switch(c) {
+		case 0:
+			result=new basic_character();
+			break;
+		case 1:
+			result=new tanker();
+			break;
+		case 2:
+			result=new heavy_dealer();
+			break;
+		case 3:
+			result=new thief();
+			break;
+		case 4:
+			result=new light_dealer();
+			break;
+		case 5:
+			result=new healer();
+			break;
+		}
+		return result;
 	}
 	public void play() {
 		first_page();
@@ -142,6 +194,20 @@ public class game_play implements WindowListener, KeyListener {
 				real_play(arrow);
 				c_f.dispose();
 			}
+			break;
+		case 2:
+			if (command==KeyEvent.VK_UP && arrow==1) {
+				arrow--;
+			}
+			
+			else if(command==KeyEvent.VK_DOWN && arrow==0) {
+				
+				arrow++;
+			}
+			else if(command==KeyEvent.VK_ENTER) {
+				
+			}
+			break;
 		}
 		
 	}
