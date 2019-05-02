@@ -10,7 +10,7 @@ import javax.swing.text.StyledDocument;
 
 public class game_play implements WindowListener, KeyListener {
 
-	JTextPane ch,gp,hpbar,cd; /* ch=character choose frame, cd=character description frame, 
+	JTextPane ch,gp,hpbar_player,hpbar_pc,cd; /* ch=character choose frame, cd=character description frame, 
 								hpbar=hpbar frame, gp=real game play frame.*/
 	String choose="->";
 	String first="Welcome to the JAVA Fighting Game!!\n\n";
@@ -95,16 +95,18 @@ public class game_play implements WindowListener, KeyListener {
 		int pc_choice;
 		
 		gp=make_frame(gp,700,450);
-		hpbar=make_frame(hpbar,700,100);
+		hpbar_player=make_frame(hpbar_player,300,100);
+		hpbar_pc=make_frame(hpbar_pc,300,100);
 		
 		gp_f=new_frame(gp_f,750,550);
-		gp_f.add("North",hpbar);
-		gp_f.add("South",gp);
+		gp_f.add("North",hpbar_player);
+		gp_f.add("North",hpbar_pc);
+		gp_f.add("Center",gp);
 		
 		gp.addKeyListener(this);
 		arrow=0;
 		present=2;
-		
+				
 		while(true) {
 			pc_choice=(int)(Math.random()*5+1);
 			if(pc_choice!=choice)
@@ -112,11 +114,16 @@ public class game_play implements WindowListener, KeyListener {
 		}
 		player=make_char(player, choice);
 		pc=make_char(pc,pc_choice);
+		
+		hpbar_player.setText(player.hp+"  ¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á");
+		hpbar_pc.setText(pc.hp+" ¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á");
+		
+		gp.setText("Start game!!\nThe enemy is "+pc.name+"\n\nWhat's next?\n"+choose+"Attack\nShield\nEvasion\nSkill\n");
 	}
 	
 	private void fight(int command) {
 		//case number 25
-		
+		arrow=0;
 	}
 	
 	private basic_character make_char(basic_character result,int c) {
@@ -196,16 +203,16 @@ public class game_play implements WindowListener, KeyListener {
 			}
 			break;
 		case 2:
-			if (command==KeyEvent.VK_UP && arrow==1) {
+			if (command==KeyEvent.VK_UP && arrow>0) {
 				arrow--;
 			}
 			
-			else if(command==KeyEvent.VK_DOWN && arrow==0) {
+			else if(command==KeyEvent.VK_DOWN && arrow<3) {
 				
 				arrow++;
 			}
 			else if(command==KeyEvent.VK_ENTER) {
-				
+				fight(arrow);				
 			}
 			break;
 		}
