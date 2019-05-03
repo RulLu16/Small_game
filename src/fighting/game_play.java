@@ -95,15 +95,16 @@ public class game_play implements WindowListener, KeyListener {
 		int pc_choice;
 		
 		gp=make_frame(gp,700,450);
-		hpbar_player=make_frame(hpbar_player,300,100);
-		hpbar_pc=make_frame(hpbar_pc,300,100);
+		hpbar_player=make_frame(hpbar_player,300,50);
+		hpbar_pc=make_frame(hpbar_pc,300,50);
 		
 		gp_f=new_frame(gp_f,750,550);
 		gp_f.add("North",hpbar_player);
 		gp_f.add("North",hpbar_pc);
-		gp_f.add("Center",gp);
 		
 		gp.addKeyListener(this);
+		JScrollPane sp = new JScrollPane(gp);
+		gp_f.add("Center",sp);
 		arrow=0;
 		present=2;
 				
@@ -124,6 +125,53 @@ public class game_play implements WindowListener, KeyListener {
 	private void fight(int command) {
 		//case number 25
 		arrow=0;
+		int pc_command=(int)(Math.random()*5);
+		
+		switch(command) {
+		case 0:
+			player.attack(pc_command, gp);
+			break;
+		case 1:
+			player.shield(pc_command, gp);
+			break;
+		case 2:
+			player.evasive(pc_command, gp);
+			break;
+		case 3:
+			player.heal(pc_command, gp);
+			break;
+		case 4:
+			player.skill(pc_command, gp);
+			break;
+		}
+		
+		switch(pc_command) {
+		case 0:
+			pc.attack(command, gp);
+			break;
+		case 1:
+			pc.shield(command, gp);
+			break;
+		case 2:
+			pc.evasive(command, gp);
+			break;
+		case 3:
+			pc.heal(command, gp);
+			break;
+		case 4:
+			pc.skill(command, gp);
+			break;
+		}
+		if(pc.hp==0) {
+			JOptionPane.showMessageDialog(null, "Conguratuation!! You Win.");
+			gp_f.dispose();
+			new_play();
+		}
+		else if(player.hp==0) {
+			JOptionPane.showMessageDialog(null, "You Lose...");
+			gp_f.dispose();
+			new_play();
+		}
 	}
 	
 	private basic_character make_char(basic_character result,int c) {
@@ -149,7 +197,7 @@ public class game_play implements WindowListener, KeyListener {
 		}
 		return result;
 	}
-	public void play() {
+	public void new_play() {
 		first_page();
 	}
 	public void keyTyped(KeyEvent e) {}

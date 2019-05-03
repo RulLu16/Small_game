@@ -1,4 +1,5 @@
 package fighting;
+import javax.swing.*;
 
 public class basic_character {
 
@@ -10,19 +11,20 @@ public class basic_character {
 	basic_character(){
 		this.hp=200;		
 	}
-	void attack() {
+	void attack(int enemy, JTextPane w) {
+		w.setText(w.getText()+"hello\n");
 		
 	}
-	void shield() {
+	void shield(int enemy, JTextPane w) {
 		
 	}
-	void evasive() {
+	void evasive(int enemy, JTextPane w) {
 		
 	}
-	void heal() {
+	void heal(int enemy, JTextPane w) {
 		
 	}
-	void skill() {
+	void skill(int enemy, JTextPane w) {
 		
 	}
 }
