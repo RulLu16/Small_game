@@ -4,6 +4,7 @@ public class thief extends basic_character{
 	thief(){
 		this.hp=150;
 		this.name="Thief";
+		this.ev_pro=80;
 	}
 
 }

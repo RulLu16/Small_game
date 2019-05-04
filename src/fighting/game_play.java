@@ -21,7 +21,7 @@ public class game_play implements WindowListener, KeyListener {
 	int arrow;
 	JTextPane fr; //first page frame
 	Frame fr_f,c_f,gp_f; // all frame
-	String[] command_menu= {"Attack","Guard","Evasion","Heal","Skill"};
+	String[] command_menu= {"Attack\n","Guard\n","Evasion\n","Heal\n","Skill\n\n"};
 	String[] char_menu= {"Beginner\n","Tanker\n","Heavy Dealer\n",
 			"Theif\n","Light Dealer\n","Healer\n"};
 	String[] descrip={
@@ -37,7 +37,6 @@ public class game_play implements WindowListener, KeyListener {
 			"Healer. All ability is basic.\n"
 			+ "Special skill : Heal guard. Can ignore enemy's attack when heal."
 	};
-	String[] command= {"Attack","Guard","Evasion","Heal","Skill"};
 	
 	basic_character player;
 	basic_character pc;
@@ -116,52 +115,80 @@ public class game_play implements WindowListener, KeyListener {
 		player=make_char(player, choice);
 		pc=make_char(pc,pc_choice);
 		
-		hpbar_player.setText(player.hp+"  ¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á");
-		hpbar_pc.setText(pc.hp+" ¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á");
+		hpbar_player.setText(player.hp+"  ");
+		for(int i=0;i<player.hp/10;i++) {
+			hpbar_player.setText(hpbar_player.getText()+"¡á");
+		}
+		hpbar_pc.setText(pc.hp+" ");
+		for(int i=0;i<pc.hp/10;i++) {
+			hpbar_player.setText(hpbar_player.getText()+"¡á");
+		}
 		
-		gp.setText("Start game!!\nThe enemy is "+pc.name+"\n\nWhat's next?\n"+choose+"Attack\nShield\nEvasion\nSkill\n");
+		gp.setText("Start game!!\nThe enemy is "+pc.name+"\n\nWhat's next?\n"+choose+"Attack\nGuard\nEvasion\nSkill\n\n");
 	}
 	
 	private void fight(int command) {
 		//case number 25
 		arrow=0;
 		int pc_command=(int)(Math.random()*5);
+		player.command=command;
+		pc.command=pc_command;
 		
 		switch(command) {
 		case 0:
-			player.attack(pc_command, gp);
+			gp.setText(gp.getText()+"Player's Attack!\n");
+			player.attack(pc, gp);
 			break;
 		case 1:
-			player.shield(pc_command, gp);
+			gp.setText(gp.getText()+"Player's Guard.\n");
+			player.shield(pc, gp);
 			break;
 		case 2:
-			player.evasive(pc_command, gp);
+			gp.setText(gp.getText()+"Player's Evasion.\n");
+			player.evasive(pc, gp);
 			break;
 		case 3:
-			player.heal(pc_command, gp);
+			gp.setText(gp.getText()+"Player's Heal.\n");
+			player.heal(pc, gp);
 			break;
 		case 4:
-			player.skill(pc_command, gp);
+			gp.setText(gp.getText()+"Player's Special skill!\n");
+			player.skill(pc, gp);
 			break;
 		}
 		
 		switch(pc_command) {
 		case 0:
-			pc.attack(command, gp);
+			gp.setText(gp.getText()+"Pc's Attack!\n");
+			pc.attack(player, gp);
 			break;
 		case 1:
-			pc.shield(command, gp);
+			gp.setText(gp.getText()+"Pc's Guard!\n");
+			pc.shield(player, gp);
 			break;
 		case 2:
-			pc.evasive(command, gp);
+			gp.setText(gp.getText()+"Pc's Evasion!\n");
+			pc.evasive(player, gp);
 			break;
 		case 3:
-			pc.heal(command, gp);
+			gp.setText(gp.getText()+"Pc's Heal!\n");
+			pc.heal(player, gp);
 			break;
 		case 4:
-			pc.skill(command, gp);
+			gp.setText(gp.getText()+"Pc's Special skill!\n");
+			pc.skill(player, gp);
 			break;
 		}
+		
+		hpbar_player.setText(player.hp+"  ");
+		for(int i=0;i<player.hp/10;i++) {
+			hpbar_player.setText(hpbar_player.getText()+"¡á");
+		}
+		hpbar_pc.setText(pc.hp+" ");
+		for(int i=0;i<pc.hp/10;i++) {
+			hpbar_player.setText(hpbar_player.getText()+"¡á");
+		}
+		
 		if(pc.hp==0) {
 			JOptionPane.showMessageDialog(null, "Conguratuation!! You Win.");
 			gp_f.dispose();
@@ -253,14 +280,28 @@ public class game_play implements WindowListener, KeyListener {
 		case 2:
 			if (command==KeyEvent.VK_UP && arrow>0) {
 				arrow--;
+				int lenght=gp.getText().length()-34;
+				gp.setText(gp.getText().substring(0,lenght));
+				for(int i=0;i<arrow;i++)
+					gp.setText(gp.getText()+command_menu[i]);
+				gp.setText(gp.getText()+choose);
+				for(int i=arrow;i<5;i++)
+					gp.setText(gp.getText()+command_menu[i]);
 			}
 			
-			else if(command==KeyEvent.VK_DOWN && arrow<3) {
-				
+			else if(command==KeyEvent.VK_DOWN && arrow<4) {
 				arrow++;
+				int lenght=gp.getText().length()-34;
+				gp.setText(gp.getText().substring(0,lenght));
+				for(int i=0;i<arrow;i++)
+					gp.setText(gp.getText()+command_menu[i]);
+				gp.setText(gp.getText()+choose);
+				for(int i=arrow;i<5;i++)
+					gp.setText(gp.getText()+command_menu[i]);
 			}
 			else if(command==KeyEvent.VK_ENTER) {
-				fight(arrow);				
+				fight(arrow);	
+				gp.setText(gp.getText()+"\n\nWhat's next?\n"+choose+"Attack\nGuard\nEvasion\nSkill\n\n");
 			}
 			break;
 		}
