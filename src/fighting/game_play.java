@@ -124,13 +124,19 @@ public class game_play implements WindowListener, KeyListener {
 			hpbar_player.setText(hpbar_player.getText()+"бс");
 		}
 		
-		gp.setText("Start game!!\nThe enemy is "+pc.name+"\n\nWhat's next?\n"+choose+"Attack\nGuard\nEvasion\nSkill\n\n");
+		gp.setText("Start game!!\nThe enemy is "+pc.name+"\n\nWhat's next?\n"+choose+"Attack\nGuard\nEvasion\nHeal\nSkill\n\n");
 	}
 	
 	private void fight(int command) {
 		//case number 25
 		arrow=0;
-		int pc_command=(int)(Math.random()*5);
+		int pc_command;
+		while(true) {
+			pc_command=(int)(Math.random()*5);
+			if(pc_command==1 && pc.can_shield>0)
+				continue;
+			break;
+		}
 		player.command=command;
 		pc.command=pc_command;
 		
@@ -280,7 +286,7 @@ public class game_play implements WindowListener, KeyListener {
 		case 2:
 			if (command==KeyEvent.VK_UP && arrow>0) {
 				arrow--;
-				int lenght=gp.getText().length()-34;
+				int lenght=gp.getText().length()-35;
 				gp.setText(gp.getText().substring(0,lenght));
 				for(int i=0;i<arrow;i++)
 					gp.setText(gp.getText()+command_menu[i]);
@@ -291,7 +297,7 @@ public class game_play implements WindowListener, KeyListener {
 			
 			else if(command==KeyEvent.VK_DOWN && arrow<4) {
 				arrow++;
-				int lenght=gp.getText().length()-34;
+				int lenght=gp.getText().length()-35;
 				gp.setText(gp.getText().substring(0,lenght));
 				for(int i=0;i<arrow;i++)
 					gp.setText(gp.getText()+command_menu[i]);
@@ -300,8 +306,12 @@ public class game_play implements WindowListener, KeyListener {
 					gp.setText(gp.getText()+command_menu[i]);
 			}
 			else if(command==KeyEvent.VK_ENTER) {
+				if(player.can_shield>0)
+					player.can_shield--;
+				if(pc.can_shield>0) 
+					pc.can_shield--;
 				fight(arrow);	
-				gp.setText(gp.getText()+"\n\nWhat's next?\n"+choose+"Attack\nGuard\nEvasion\nSkill\n\n");
+				gp.setText(gp.getText()+"\n\nWhat's next?\n"+choose+"Attack\nGuard\nEvasion\nHeal\nSkill\n\n");
 			}
 			break;
 		}
