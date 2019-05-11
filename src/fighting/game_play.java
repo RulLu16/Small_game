@@ -94,12 +94,15 @@ public class game_play implements WindowListener, KeyListener {
 		int pc_choice;
 		
 		gp=make_frame(gp,700,450);
-		hpbar_player=make_frame(hpbar_player,300,50);
-		hpbar_pc=make_frame(hpbar_pc,300,50);
+		Panel p=new Panel();
+		p.setSize(700,50);
+		hpbar_player=make_frame(hpbar_player,350,50);
+		hpbar_pc=make_frame(hpbar_pc,350,50);
+		p.add("West",hpbar_player);
+		p.add("East",hpbar_pc);
 		
 		gp_f=new_frame(gp_f,750,550);
-		gp_f.add("North",hpbar_player);
-		gp_f.add("North",hpbar_pc);
+		gp_f.add("North",p);
 		
 		gp.addKeyListener(this);
 		JScrollPane sp = new JScrollPane(gp);
@@ -121,7 +124,7 @@ public class game_play implements WindowListener, KeyListener {
 		}
 		hpbar_pc.setText(pc.hp+" ");
 		for(int i=0;i<pc.hp/10;i++) {
-			hpbar_player.setText(hpbar_player.getText()+"бс");
+			hpbar_pc.setText(hpbar_pc.getText()+"бс");
 		}
 		
 		gp.setText("Start game!!\nThe enemy is "+pc.name+"\n\nWhat's next?\n"+choose+"Attack\nGuard\nEvasion\nHeal\nSkill\n\n");
@@ -192,15 +195,15 @@ public class game_play implements WindowListener, KeyListener {
 		}
 		hpbar_pc.setText(pc.hp+" ");
 		for(int i=0;i<pc.hp/10;i++) {
-			hpbar_player.setText(hpbar_player.getText()+"бс");
+			hpbar_pc.setText(hpbar_pc.getText()+"бс");
 		}
 		
-		if(pc.hp==0) {
+		if(pc.hp<=0) {
 			JOptionPane.showMessageDialog(null, "Conguratuation!! You Win.");
 			gp_f.dispose();
 			new_play();
 		}
-		else if(player.hp==0) {
+		else if(player.hp<=0) {
 			JOptionPane.showMessageDialog(null, "You Lose...");
 			gp_f.dispose();
 			new_play();
